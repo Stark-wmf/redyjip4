@@ -1,0 +1,50 @@
+spring:
+  datasource:
+#    type: com.alibaba.druid.pool.DruidDataSource  #这是druid自己定义的
+    url: jdbc:mysql://localhost:3306/db1?useSSL=false&serverTimezone=GMT&allowPublicKeyRetrieval=true  #这是你的jdbc_url
+    username: root  #数据库连接用户名
+    password: 191513   #数据库连接密码
+    initialSize: 10  #初始化的时候有几条连接
+    minIdle: 10  #连接池中最少保持几条连接
+    maxActive: 100  #连接池中最大保持几条连接
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 200   #PreparedStatement缓存大小
+    filters: stat,wall          #stat:web监控   wall：sql防火墙
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    useGlobalDataSourceStat: true
+    loginUsername: root
+    loginPassword: 191513
+    test-while-idle: true
+    driverClassName: com.mysql.cj.jdbc.Driver    #jdbc驱动名，这个一定要有
+    http:
+      encoding:
+        force: true
+        charset: UTF-8
+        enabled: true
+      servlet:
+        multipart:
+          max-file-size: 5MB
+          max-request-size: 10MB
+      resources:  #静态资源路径设置，springboot将会在设置的几个值中以从前到后顺序查找静态资源
+        static-locations: classpath:/META-INF/resources/,classpath:/resources,classpath:/static/,classpath:/public/
+    server:  #内嵌tomcat的配置
+      tomcat:
+        uri-encoding: UTF-8
+      port: 8080
+      servlet:
+        context-path: /weixin
+        logging:
+          level:
+            org.springframework.web: ERROR
+            com.yiibai: DEBUG
+          pattern:
+            console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+            file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+          file: /usr/local/tomcat8/webapps/logs/sqldemo.log
